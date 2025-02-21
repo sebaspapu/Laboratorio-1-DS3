@@ -1,5 +1,6 @@
 from fastapi import FastAPI
 from pydantic import BaseModel
+import redis
 
 app = FastAPI()
 
@@ -7,19 +8,22 @@ class Item(BaseModel):
     key: str
     value: str
 
-
-my_dict = {}
+## Redis Connection
+r = redis.Redis(host='redis', port=6379, db=0, decode_responses=True)
 
 @app.get("/")
 async def root():
-    return {"owner": "SEBASTIAN BOLAÑOS"}
+    return {"owner": "Fredy Ballesteros"}
 
 @app.post("/add/")
 async def add_item(item: Item):
-    my_dict[item.key] = item.value
+    r.set(item.key, item.value)
     return {"status": "Item added successfully"}
 
 @app.get("/get/{key}/")
 async def get_item(key: str):
-    value = my_dict.get(key, "Key not found")
-    return {"key": key, "value": value}
+    value = r.get(key)
+    if value is None:
+        return {"Error": "Key not found"}
+    else:
+        return {"key": key, "value": value}

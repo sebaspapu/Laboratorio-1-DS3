@@ -43,12 +43,36 @@ docker build -t cbaspapudocker/pythonapi .
 me logueo en dockerhub:
 docker login
 
+docker tag pythonapi cbaspapudocker/pythonapi:latest
+
 hago push:
 docker push cbaspapudocker/pythonapi
 
 
-docker tag pythonapi cbaspapudocker/pythonapi:latest
+para eliminar un contenedor:
+docker rm <id_contenedor>
 
 
+----------------------------------------------------
+El laboratorio a entregar
 
+orquestar:
+docker-compose up --build
+
+verifico los servicios que están corriendo:
+docker compose ps
+
+accedo dentro del servicio de redist, para buscar los datos que ingrese a través del postman, cuando usé POST.
+docker exec -it laboratorio-1-redis-1 /bin/bash
+
+entrar a cli:
+redis-cli
+
+obtengo la clave, el numero que pase en el post:
+GET mykey
+
+
+docker hub:
+
+https://hub.docker.com/repository/docker/cbaspapudocker/laboratorio-1-app/general
 
