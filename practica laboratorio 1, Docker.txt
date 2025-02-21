@@ -1,0 +1,54 @@
+practica laboratorio 1, Docker
+
+
+credenciales dockerhub:
+netflserio@gmail.com
+cbaspapudocker
+sebasty23
+
+
+https://chatgpt.com/share/67b80b5e-409c-800f-944b-d1d9332f0954
+
+
+El proceso de recrear la imagen:
+
+mostrar lista de imágenes:
+docker ps -a
+
+luego mostrar lista de contenedores asociados o creados apartir de esa imagen:
+docker ps -a --filter "ancestor=<nombre_o_id_imagen>"
+
+debo parar ese contenedor, si esta en ejecución:
+docker stop $(docker ps -q --filter "ancestor=pythonapi")
+
+luego si puedo eliminarlo o eliminarlos si son varios:
+docker rm $(docker ps -a -q --filter "ancestor=pythonapi")
+
+ahora si puedo eliminar la imagen:
+docker rmi pythonapi
+
+
+vuelvo a construir la imagen, usando mi dockerfile:
+docker build -t python-api .
+
+corro el contenedor apartir de esa imagen:
+docker run -p 8000:8000 python-api
+
+
+subir a dockerhub:
+
+debo crear una imagen con el dockerfile que tengo en la carpeta, que es el que tiene configurado todo lo de mi aplicación:
+docker build -t cbaspapudocker/pythonapi .
+
+me logueo en dockerhub:
+docker login
+
+hago push:
+docker push cbaspapudocker/pythonapi
+
+
+docker tag pythonapi cbaspapudocker/pythonapi:latest
+
+
+
+
